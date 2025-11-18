@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+       
+    <meta charset="UTF-8">
+       
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Murojaat</title>
+        <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* ===== ЛЕВАЯ ПАНЕЛЬ ===== */
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-icon {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 40px;
+            border: 4px solid #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        .user-icon::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 45px solid transparent;
+            border-right: 45px solid transparent;
+            border-top: 75px solid #3b82f6;
+            top: 30px;
+        }
+
+        /* ===== ЦЕНТРАЛЬНАЯ ЧАСТЬ (СПИСОК ДОКУМЕНТОВ) ===== */
+        .center {
+            flex: 1;
+            max-width: 500px;
+            min-width: 400px;
+        }
+
+        .input-list {
+            margin-bottom: 30px;
+            min-height: 500px;
+        }
+
+        .document-item {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            color: #1e293b;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            opacity: 1;
+        }
+
+        .document-item.loading {
+            opacity: 0;
+        }
+
+
+        .document-item:hover {
+            background: #dbeafe;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .document-item.selected {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .bottom-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .bottom-buttons button {
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .bottom-buttons button:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ===== ПРАВАЯ ПАНЕЛЬ (КОНТЕНТ) ===== */
+        .right {
+            width: 450px;
+            flex-shrink: 0;
+        }
+
+        .right-header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            text-align: center;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+        }
+
+        .big-box {
+            width: 100%;
+            height: 600px;
+            border: 3px solid #3b82f6;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #334155;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-style: italic;
+            color: #94a3b8;
+        }
+
+        .si-btn-container {
+            text-align: left;
+            margin-top: 25px;
+        }
+
+        .si-btn {
+            padding: 14px 50px;
+            font-size: 17px;
+            font-weight: 600;
+            border: 2px solid #3b82f6;
+            background: white;
+            color: #1e293b;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .si-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sidebar,
+            .center,
+            .right {
+                width: 100%;
+                max-width: 600px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="renderDocumentList(initialDocumentsData, false)">
+        <div class="container">
+                <div class="sidebar">
+                        <div class="user-icon"></div>
+                    </div>
+
+                <main class="center">
+                        <div class="input-list" id="document-list">
+                                                </div>
+
+                        <div class="bottom-buttons">
+                                <button id="bekor-qilish-btn">Bekor qilish</button>
+                                <button id="kiritish-btn">Kiritish</button>
+                            </div>
+                    </main>
+
+                <div class="right">
+                        <div class="right-header"></div>
+                        <div class="big-box" id="document-content">
+                                Hujjatni ko'rish uchun chap tomonda tanlang...
+                            </div>
+
+                        <div class="si-btn-container">
+                                <button class="si-btn" id="si-tahlil-btn">SI tahlil</button>
+                            </div>
+                    </div>
+            </div>
+
+       
+    <script>
+        const documentList = document.getElementById('document-list');
+        const documentContent = document.getElementById('document-content');
+        const rightHeader = document.querySelector('.right-header');
+        const siTahlilBtn = document.getElementById('si-tahlil-btn');
+        const bekorQilishBtn = document.getElementById('bekor-qilish-btn');
+        const kiritishBtn = document.getElementById('kiritish-btn');
+
+        // Hujjat nomlari va ularning kontent qismi (maydon nomlari ishlatilgan holda)
+        const originalDocumentsData = [
+            { label: "Maydon 1", content: "Qabul qilingan ariza №1234" },
+            { label: "Maydon 2", content: "Ijro hisoboti F305" },
+            { label: "Maydon 3", content: "Protokol bo'yicha qaror" },
+            { label: "Maydon 4", content: "Taqdimot loyihasi v1.1" },
+            { label: "Maydon 5", content: "Kelishuv shartnomasi" },
+            { label: "Maydon 6", content: "Xizmat yozishmasi 2025/5" },
+            { label: "Maydon 7", content: "Moliyaviy tahlil natijasi" },
+            { label: "Maydon 8", content: "Mehnat shartnomasi L-89" },
+            { label: "Maydon 9", content: "Vazifa topshirig'i №007" }
+        ];
+
+        // Boshlang'ich holatdagi ko'rinish uchun faqat Maydon nomlari
+        const initialDocumentsData = originalDocumentsData.map(doc => doc.label);
+
+        // SI tahlil tugmachasi bosilgandagi to'liq matnli ko'rinish
+        const siAnalysisDocumentData = originalDocumentsData.map((doc, index) => {
+            // Maydon 2 (index 1) va Maydon 7 (index 6) ga ⚠️ belgisini qo'shamiz
+            if (index === 1 || index === 6) {
+                return `${doc.label}: ${doc.content} ⚠️`;
+            }
+            return `${doc.label}: ${doc.content} ✓`;
+        });
+
+        // Hozirgi holatni saqlash (true - SI tahlil rejimi, false - oddiy rejim)
+        let isAnalysisMode = false;
+
+
+        // Funktsiya: Hujjatlar ro'yxatini shakllantirish
+        function renderDocumentList(data, analysisMode) {
+            documentList.innerHTML = '';
+            isAnalysisMode = analysisMode;
+
+            data.forEach((text, index) => {
+                const item = document.createElement('div');
+                item.className = 'document-item loading';
+                item.setAttribute('data-index', index);
+
+                documentList.appendChild(item);
+
+                // Animatsiya
+                setTimeout(() => {
+                    item.textContent = text;
+                    item.classList.remove('loading');
+                }, 50 * (index + 1));
+            });
+
+            setTimeout(attachEventListeners, 50 * data.length + 50);
+        }
+
+        // Funktsiya: Tanlash mantiqi
+        function attachEventListeners() {
+            const documentItems = documentList.querySelectorAll('.document-item');
+            documentItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    documentItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    const index = parseInt(this.getAttribute('data-index'));
+
+                    const docData = originalDocumentsData[index];
+
+                    let fullDocName = docData.label;
+                    if (isAnalysisMode) {
+                        fullDocName = `${docData.label}: ${docData.content}`;
+                    }
+
+                    const content = `Tanlangan Maydon:\n\n**${fullDocName}**\n\n\nBu joyda tanlangan maydonning to'liq mazmuni ko'rinadi. Uzoq matnli hujjatlar uchun ajoyib.\n\nQo'shimcha ma'lumot:\n- Hujjat sanasi: ${new Date().toLocaleDateString('uz-UZ')}\n- Holat: Faol\n- Mas'ul: Administrator`;
+
+                    documentContent.style.justifyContent = 'flex-start';
+                    documentContent.style.alignItems = 'flex-start';
+
+                    if (!isAnalysisMode) {
+                        documentContent.innerHTML = `<div style="padding: 10px; white-space: pre-wrap;">${content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>`;
+                    }
+
+                    rightHeader.textContent = isAnalysisMode ? '🤖 Sun\'iy Intellekt Tahlili' : 'Hujjat Mazmuni';
+                });
+            });
+        }
+
+        // SI tahlil kontenti
+        const siAnalysisContent = `
+            <div style="padding: 10px;">
+                <h3 style="color: #059669; margin-bottom: 15px; font-size: 18px;">🤖 Sun'iy Intellekt Tahlili</h3>
+                
+                <div style="background: #f0fdf4; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <strong style="color: #059669;">Umumiy xulosalar:</strong>
+                    <p style="margin-top: 8px; line-height: 1.7;">
+                    Barcha hujjatlar tahlil qilindi. Tizimda ${originalDocumentsData.length} ta hujjat mavjud.
+                    </p>
+                </div>
+
+                <div style="background: #eff6ff; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <strong style="color: #3b82f6;">Hujjatlar bo'yicha statistika:</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>Arizalar: 2 ta</li>
+                        <li>Hisobotlar: 2 ta</li>
+                        <li>Shartnomalar: 3 ta</li>
+                        <li>Boshqa hujjatlar: 2 ta</li>
+                    </ul>
+                </div>
+
+                <div style="background: #fef3c7; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <strong style="color: #d97706;">⚠️ Diqqat talab qiladi:</strong>
+                    <p style="margin-top: 8px; line-height: 1.7;">
+                    2 ta hujjat tez orada muddati tugaydi. Ko'rib chiqish tavsiya etiladi.
+                    </p>
+                </div>
+
+                <div style="background: #f3f4f6; padding: 15px; border-radius: 6px;">
+                    <strong style="color: #334155;">📊 Tavsiyalar:</strong>
+                    <ol style="margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+                        <li>Barcha shartnomalar yangilangan</li>
+                        <li>Arxivlash uchun 3 ta hujjat tayyor</li>
+                        <li>Qayta ko'rib chiqish zarur: Maydon 2, 7</li>
+                    </ol>
+                </div>
+
+                <div style="margin-top: 20px; padding: 12px; background: #dcfce7; border-left: 4px solid #22c55e; border-radius: 4px;">
+                    <strong style="color: #15803d;">✓ Tahlil muvaffaqiyatli yakunlandi</strong>
+                    <p style="margin-top: 5px; font-size: 13px; color: #166534;">
+                    Sana: ${new Date().toLocaleString('uz-UZ')}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        // SI tahlil tugmasi mantiqi
+        siTahlilBtn.addEventListener('click', function () {
+            renderDocumentList(siAnalysisDocumentData, true);
+            documentContent.style.justifyContent = 'flex-start';
+            documentContent.style.alignItems = 'flex-start';
+            documentContent.innerHTML = siAnalysisContent;
+            rightHeader.innerHTML = `🤖 Sun'iy Intellekt Tahlili`;
+
+            const documentItems = documentList.querySelectorAll('.document-item');
+            documentItems.forEach(i => i.classList.remove('selected'));
+        });
+
+        // Bekor qilish tugmasi mantiqi
+        bekorQilishBtn.addEventListener('click', function () {
+            renderDocumentList(initialDocumentsData, false);
+            documentContent.innerHTML = 'Hujjatni ko\'rish uchun chap tomonda tanlang...';
+            documentContent.style.justifyContent = 'center';
+            documentContent.style.alignItems = 'center';
+            rightHeader.textContent = '';
+        });
+
+        // 🚀 KIRITISH tugmasi mantiqi
+        kiritishBtn.addEventListener('click', function () {
+            // Tugma bosilganda murojaat.html ga yo'naltirish
+            window.location.href = 'murojaat.html';
+        });
+    </script>
+</body>
+
+</html>

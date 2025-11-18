@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tashkilotlar | SCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --purple-gradient: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            --green: #10b981;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --light: #f8fafc;
+            --text: #1e293b;
+            --bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+        }
+
+        /* Левая панель */
+        .sidebar {
+            width: 200px;
+            background: #f8fafc;
+            border-right: 1px solid var(--border);
+            padding: 30px 0;
+            position: fixed;
+            height: 100%;
+            z-index: 10;
+        }
+        .tab {
+            padding: 16px 24px;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tab:hover { background: #eef2ff; color: var(--primary); }
+        .tab.active {
+            background: white;
+            color: var(--green);
+            font-weight: 600;
+            border-left: 4px solid var(--green);
+        }
+
+        /* Основная часть */
+        .main {
+            margin-left: 200px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Шапка с пользователем */
+        .header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .header img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        /* Фильтры */
+        .filters {
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            border: 1px solid #c7d2fe;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .filter-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        /* Контент */
+        .content {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+        }
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 16px;
+            background: transparent;
+        }
+        th {
+            background: transparent;
+            padding: 0 20px 16px;
+            text-align: left;
+            font-weight: 500;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        td {
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-size: 15px;
+        }
+        tr {
+            display: grid;
+            grid-template-columns: 280px 180px 100px 100px 120px;
+        }
+        tr:hover td {
+            box-shadow: 0 8px 25px rgba(99,102,241,0.12);
+            transform: translateY(-2px);
+        }
+
+        .status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .status.inprogress { background: #dbeafe; color: #1d4ed8; }
+        .status.delayed { background: #fef3c7; color: #92400e; }
+        .status.completed { background: #d1fae5; color: #065f46; }
+
+        /* Чат-бабл */
+        .chat-bubble {
+            position: fixed;
+            bottom: 30px;
+            left: 220px;
+            background: var(--purple-gradient);
+            color: white;
+            padding: 18px 24px;
+            border-radius: 24px;
+            max-width: 360px;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(99,102,241,0.4);
+            z-index: 100;
+        }
+        .chat-toggle {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Левая панель -->
+<aside class="sidebar">
+    <div class="tab" onclick="window.location.href='murojaat.html'">Murojaat</div>
+    <div class="tab" onclick="window.location.href='ijro-new.html'">Ijro</div>
+    <div class="tab active" onclick="window.location.href='tashkilotlar.html'">Tashkilotlar</div>
+    <div class="tab" onclick="window.location.href='tahlil.html'">Tahlil</div>
+</aside>
+
+
+    <!-- Основная часть -->
+    <main class="main">
+        <header class="header">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Baxodir">
+            <div>Salom Baxodir</div>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active">Tashkilot nomi</button>
+            <button class="filter-btn">Muddat o‘tgan</button>
+            <button class="filter-btn">Bajarilmoqda</button>
+        </div>
+
+        <div class="content">
+            <h1 class="page-title">Tashkilotlar</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>F.I.SH</th>
+                        <th>Bo‘linma</th>
+                        <th>Jami</th>
+                        <th>Muddat o‘tgan</th>
+                        <th>Bajarilmoqda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Karimov Aziz Shavkatovich</td>
+                        <td>Ijtimoiy himoya</td>
+                        <td>112</td>
+                        <td>23</td>
+                        <td>89</td>
+                    </tr>
+                    <tr>
+                        <td>Toshmatova Nilufar Akramovna</td>
+                        <td>Nafaqalar</td>
+                        <td>98</td>
+                        <td>15</td>
+                        <td>83</td>
+                    </tr>
+                    <tr>
+                        <td>Rahmonov Jasur Tulkinovich</td>
+                        <td>Nogironlik</td>
+                        <td>87</td>
+                        <td>12</td>
+                        <td>75</td>
+                    </tr>
+                    <tr>
+                        <td>Usmonova Dilbar Raximovna</td>
+                        <td>Reabilitatsiya</td>
+                        <td>76</td>
+                        <td>8</td>
+                        <td>68</td>
+                    </tr>
+                    <tr>
+                        <td>Ismoilov Sardor Bakhtiyorovich</td>
+                        <td>Moliyaviy yordam</td>
+                        <td>105</td>
+                        <td>18</td>
+                        <td>87</td>
+                    </tr>
+                    <tr>
+                        <td>Mirzayeva Gulnora Alievna</td>
+                        <td>Konsultatsiya</td>
+                        <td>92</td>
+                        <td>9</td>
+                        <td>83</td>
+                    </tr>
+                    <tr>
+                        <td>Yuldashev Otabek Farhodovich</td>
+                        <td>Hujjatlar</td>
+                        <td>81</td>
+                        <td>11</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                        <td>Sharipova Malika Karimova</td>
+                        <td>Monitoring</td>
+                        <td>69</td>
+                        <td>7</td>
+                        <td>62</td>
+                    </tr>
+                    <tr>
+                        <td>Alimov Rustam Normatovich</td>
+                        <td>Tekshiruv</td>
+                        <td>94</td>
+                        <td>14</td>
+                        <td>80</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Чат-бабл -->
+    <div class="chat-bubble">
+        Siz tizimdan chiqmasdan barcha hamkasblaringiz bilan suhbatlashishingiz mumkin
+        <button class="chat-toggle">Korporativ chat</button>
+    </div>
+
+</body>
+</html>

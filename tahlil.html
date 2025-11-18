@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahlil | SCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --green: #10b981;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --light: #f1f5f9;
+            --text: #1e293b;
+            --bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+        }
+
+        /* =============== SIDEBAR =============== */
+        .sidebar {
+            width: 220px;
+            background: var(--light);
+            border-right: 1px solid var(--border);
+            padding: 30px 0;
+            position: fixed;
+            height: 100%;
+            z-index: 10;
+            transition: width 0.3s;
+        }
+
+        .tab {
+            display: block;
+            padding: 16px 24px;
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--gray);
+            text-decoration: none;
+            transition: 0.25s;
+        }
+
+        .tab:hover {
+            background: #eef2ff;
+            color: var(--primary);
+            padding-left: 32px;
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--green);
+            font-weight: 600;
+            border-left: 4px solid var(--green);
+        }
+
+        /* =============== MAIN CONTENT =============== */
+        .main {
+            margin-left: 220px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            overflow-y: auto;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* =============== DASHBOARD BLOCKS =============== */
+        .dashboard-block {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #94a3b8;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            padding: 20px;
+        }
+
+        .block-title {
+            position: absolute;
+            top: 18px;
+            left: 22px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* =============== CHAT BUBBLE =============== */
+        .chat-bubble {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: white;
+            padding: 18px 24px;
+            border-radius: 22px;
+            max-width: 360px;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+            z-index: 100;
+        }
+
+        .chat-toggle {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .chat-toggle:hover {
+            background: #eef2ff;
+        }
+
+        /* =============== RESPONSIVE DESIGN =============== */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .tab {
+                padding: 16px 12px;
+                font-size: 12px;
+            }
+
+            .tab:hover {
+                padding-left: 16px;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .dashboard-block {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <a class="tab" href="murojaat.html">Murojaat</a>
+        <a class="tab" href="ijro-new.html">Ijro</a>
+        <a class="tab" href="tashkilotlar.html">Tashkilotlar</a>
+        <a class="tab active" href="tahlil.html">Tahlil</a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <header class="header">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+            <div>Salom, Baxodir</div>
+        </header>
+
+        <div class="content">
+            <h1 class="page-title">Tahlil</h1>
+
+            <div class="dashboard-block">
+                <div class="block-title">Mavzular bo‘yicha statistikalar</div>
+                Bu yerda grafik bo‘ladi
+            </div>
+
+            <div class="dashboard-block">
+                <div class="block-title">Hududlar bo‘yicha tahlil</div>
+                Bu yerda hududlarning statistik grafik bo‘ladi
+            </div>
+        </div>
+    </main>
+
+    <div class="chat-bubble">
+        Siz tizimdan chiqmasdan barcha hamkasblaringiz bilan suhbatlashishingiz mumkin
+        <button class="chat-toggle">Korporativ chat</button>
+    </div>
+
+</body>
+</html>

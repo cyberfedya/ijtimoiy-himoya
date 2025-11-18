@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ijtimoiy Himoya - Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f9fc;
+            padding: 30px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            width: 1000px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-back {
+            padding: 10px 24px;
+            background: #e5e7eb;
+            color: #374151;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-back:hover { background: #d1d5db; }
+
+        .container {
+            width: 1000px;
+            height: 600px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .left-menu {
+            width: 35%;
+            padding: 30px 20px;
+            border-right: 2px solid #3b82f6;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            height: 100px;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            background: white;
+            color: #1e40af;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+        }
+        .menu-btn:hover {
+            background: #ebf3ff;
+            transform: translateY(-3px);
+        }
+        .menu-btn.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .right-content {
+            width: 65%;
+            padding: 30px;
+            background: #f8faff;
+            overflow-y: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .service-card {
+            height: 120px;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            color: #1e40af;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .service-card:hover {
+            background: #ebf3ff;
+            transform: translateY(-5px);
+        }
+        .service-card small {
+            margin-top: 8px;
+            color: #64748b;
+            font-weight: normal;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+        .form-group select,
+        .form-group textarea,
+        .form-group .file-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: none;
+        }
+        .file-area {
+            height: 100px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .file-area:hover {
+            background: #f0f7ff;
+        }
+
+        .applications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .app-item {
+            padding: 15px;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📝 Murojaat Yuborish Tizimi</h1>
+        <div style="display: flex; gap: 1rem;">
+            <a href="navigation.html" style="padding: 10px 24px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">Навигация</a>
+            <a href="home.html" style="padding: 10px 24px; background: #3b82f6; color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">Dashboard</a>
+            <a href="landing.html" class="btn-back">← Asosiy sahifa</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Левое меню -->
+        <div class="left-menu">
+            <div class="menu-btn" onclick="showSection('my-apps')">
+                Mening<br>murojaatlarim
+            </div>
+            <div class="menu-btn active" id="newAppBtn" onclick="showSection('new-app')">
+                Yangi<br>murojaatlar
+            </div>
+            <div class="menu-btn" id="servicesBtn" onclick="showSection('services')">
+                Xizmatlar
+            </div>
+        </div>
+
+        <!-- Правое содержимое -->
+        <div class="right-content" id="contentArea">
+            <!-- Форма новой заявки (по умолчанию) -->
+            <div id="new-app">
+                <h2 style="color: #1e40af; margin-bottom: 1.5rem;">📝 Yangi murojaat yaratish</h2>
+                <div class="form-group">
+                    <label>Murojaat turi:</label>
+                    <select>
+                        <option>Shikoyat</option>
+                        <option>Ariza</option>
+                        <option>So'rov</option>
+                        <option>Taklif</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tashkilotni tanlang:</label>
+                    <select>
+                        <option>Inson ijtimoiy himoya markazi</option>
+                        <option>Mahalla fuqarolar yig'ini</option>
+                        <option>Nogironlikni aniqlash komissiyasi</option>
+                        <option>Ijtimoiy himoya milliy agentligi</option>
+                        <option>Hududiy boshqarma</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Murojaatni kiriting:</label>
+                    <textarea placeholder="Murojaatingiz matnini bu yerga yozing..." style="height: 150px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Fayl yuklash (ixtiyoriy):</label>
+                    <div class="file-area">
+                        <div style="font-size: 2rem;">📎</div>
+                        <div>Fayllarni bu yerga sudrab tashlang yoki bosing</div>
+                        <div style="font-size: 0.875rem; color: #94a3b8; margin-top: 0.5rem;">PDF, DOC, JPG - maksimal 10MB</div>
+                    </div>
+                </div>
+                <button onclick="submitAppeal()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 1rem;">
+                    ✅ Murojaatni yuborish
+                </button>
+            </div>
+
+            <!-- Список моих заявок -->
+            <div id="my-apps" style="display: none;">
+                <h2 style="color: #1e40af; margin-bottom: 20px;">Mening murojaatlarim</h2>
+                <div class="applications-list">
+                    <div class="app-item">
+                        <strong>#MR-2024-057</strong> — Moddiy yordam<br>
+                        <small>16.11.2024 | Holati: Jarayonda</small>
+                    </div>
+                    <div class="app-item">
+                        <strong>#MR-2024-041</strong> — Nogironlik guruhi<br>
+                        <small>10.11.2024 | Holati: Hal qilindi</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Список услуг -->
+            <div id="services" style="display: none;">
+                <h2 style="color: #1e40af; margin-bottom: 20px;">Xizmat turlari</h2>
+                <div class="services-grid">
+                    <div class="service-card" onclick="alert('Nafaqa olish bo\'yicha murojaat ochildi')">
+                        Nafaqa olish<br><small>Jarayonda</small>
+                    </div>
+                    <div class="service-card">
+                        Ijtimoiy himoya<br><small>Jarayonda</small>
+                    </div>
+                    <div class="service-card">
+                        Reabilitatsiya markazida ko'rik<br><small>Bajarilgan</small>
+                    </div>
+                    <div class="service-card">
+                        Tadbirlar ishtirok etish<br><small>Bajarilgan</small>
+                    </div>
+                    <div class="service-card">
+                        Maktabga navbatga yozilish
+                    </div>
+                    <div class="service-card">
+                        Suvunchi puli olish
+                    </div>
+                    <div class="service-card">
+                        Nikohdan o'tishga ariza qoldirish
+                    </div>
+                    <div class="service-card">
+                        Ko'ngilli tadbirlarga jalb etish
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            // Скрываем всё
+            document.getElementById('my-apps').style.display = 'none';
+            document.getElementById('new-app').style.display = 'none';
+            document.getElementById('services').style.display = 'none';
+
+            // Убираем active со всех кнопок
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Показываем нужный блок и подсвечиваем кнопку
+            if (section === 'my-apps') {
+                document.getElementById('my-apps').style.display = 'block';
+                document.querySelectorAll('.menu-btn')[0].classList.add('active');
+            } else if (section === 'new-app') {
+                document.getElementById('new-app').style.display = 'block';
+                document.getElementById('newAppBtn').classList.add('active');
+            } else if (section === 'services') {
+                document.getElementById('services').style.display = 'block';
+                document.getElementById('servicesBtn').classList.add('active');
+            }
+        }
+
+        function submitAppeal() {
+            alert('✅ Murojaatingiz muvaffaqiyatli qabul qilindi!\n\nRegistratsiya raqami: MR-2024-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0') + '\n\nSiz elektron pochta va SMS orqali xabarnoma olasiz.');
+            window.location.href = 'tekshirish.html';
+        }
+    </script>
+</body>
+</html>
