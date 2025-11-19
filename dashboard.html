@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devonxona Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            background-color: #000;
+        }
+
+        /* Background */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80') center/cover no-repeat;
+            z-index: 1;
+        }
+        
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Main Container */
+        .dashboard-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 20px 25px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo i {
+            font-size: 32px;
+            margin-right: 12px;
+            color: #10b981;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 25px;
+            margin: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            margin-right: 15px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: white;
+            border-left-color: #10b981;
+        }
+
+        .nav-item.active i {
+            color: #10b981;
+        }
+
+        .nav-item:not(.active):hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            height: 80px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .arrow-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            transition: color 0.3s;
+        }
+
+        .arrow-btn:hover {
+            color: white;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 350px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-bar input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 18px;
+        }
+
+        .btn-create {
+            padding: 12px 24px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-create.hidden {
+            display: none;
+        }
+
+        .btn-create:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-create i {
+            font-size: 18px;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        /* Appeals Grid */
+        .appeals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .appeal-card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .appeal-card:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .appeal-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 12px;
+        }
+
+        .appeal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .appeal-location {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .appeal-location i {
+            font-size: 16px;
+        }
+
+        .appeal-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .status-progress {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Create Appeal Form */
+        .create-form-container {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .create-form-container.active {
+            display: flex;
+            gap: 30px;
+        }
+
+        .form-sidebar {
+            width: 180px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-icon-circle {
+            width: 140px;
+            height: 140px;
+            border: 4px solid #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .user-icon-circle::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-top: 80px solid #3b82f6;
+            top: 35px;
+        }
+
+        .form-center {
+            flex: 1;
+            max-width: 520px;
+        }
+
+        .document-list-area {
+            margin-bottom: 30px;
+            min-height: 450px;
+        }
+
+        .document-item {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .document-item:hover {
+            background: rgba(219, 234, 254, 0.95);
+            transform: translateX(6px);
+            border-color: rgba(59, 130, 246, 0.8);
+        }
+
+        .document-item.selected {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 14px 40px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 2px solid rgba(59, 130, 246, 0.6);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-buttons button:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .form-right {
+            width: 460px;
+            flex-shrink: 0;
+        }
+
+        .form-right-header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            text-align: center;
+            padding: 16px 20px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+        }
+
+        .form-content-box {
+            width: 100%;
+            height: 480px;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            overflow-y: auto;
+            color: #334155;
+            font-size: 15px;
+            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-style: italic;
+            color: #94a3b8;
+        }
+
+        .form-content-box.has-content {
+            display: block;
+            text-align: left;
+            font-style: normal;
+            color: #334155;
+        }
+
+        .si-btn-area {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .si-btn {
+            padding: 14px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid rgba(59, 130, 246, 0.6);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #1e293b;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .si-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Ijro Table Styles */
+        .ijro-table-container {
+            display: none;
+        }
+
+        .ijro-table-container.active {
+            display: block;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header-cell {
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .table-body {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .table-cell {
+            padding: 1rem 1.25rem;
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .table-cell:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+
+        .table-cell.name {
+            justify-content: flex-start;
+            font-weight: 600;
+        }
+
+        .cell-number {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .cell-warning {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .cell-warning .cell-number {
+            color: #ef4444;
+        }
+
+        .cell-success {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .cell-success .cell-number {
+            color: #10b981;
+        }
+
+        .cell-total {
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .cell-total .cell-number {
+            color: #6366f1;
+        }
+
+        /* Tashkilotlar Styles */
+        .tashkilotlar-container {
+            display: none;
+        }
+
+        .tashkilotlar-container.active {
+            display: block;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .filter-tab {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(59, 130, 246, 0.6);
+            color: white;
+        }
+
+        .filter-tab.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #6366f1;
+            color: white;
+        }
+
+        /* Tahlil Styles */
+        .tahlil-container {
+            display: none;
+        }
+
+        .tahlil-container.active {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .dashboard-block {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            border-radius: 20px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .dashboard-block:hover {
+            border-color: rgba(99, 102, 241, 0.8);
+            background: rgba(0, 0, 0, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .block-title {
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #6366f1;
+            background: rgba(99, 102, 241, 0.15);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Chat Bubble */
+        .chat-bubble {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: white;
+            padding: 18px 24px;
+            border-radius: 22px;
+            max-width: 360px;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+            z-index: 100;
+            line-height: 1.6;
+        }
+
+        .chat-toggle {
+            background: white;
+            color: #6366f1;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            display: inline-block;
+        }
+
+        .chat-toggle:hover {
+            background: #eef2ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .nav-icon i {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s;
+        }
+
+        .nav-icon.active {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-icon.active i {
+            color: #10b981;
+        }
+
+        .nav-icon:not(.active):hover i {
+            color: white;
+        }
+
+        .nav-icon.profile-icon {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .nav-icon.profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 3px solid #10b981;
+        }
+
+        /* Notification Toast */
+        .notification-toast {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            animation: slideIn 0.4s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .notification-toast.show {
+            opacity: 1;
+            pointer-events: all;
+            animation: slideIn 0.4s ease-out, fadeOut 0.4s ease-out 2.6s forwards;
+        }
+
+        .notification-toast img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .notification-text {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 16px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class='bx bxs-bank'></i>
+                <span>DEVONXONA</span>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="murojaat">
+                    <i class='bx bxs-inbox'></i>
+                    Murojaat
+                </a>
+                
+                <a href="#" class="nav-item" data-page="ijro">
+                    <i class='bx bxs-data'></i>
+                    Ijro
+                </a>
+                
+                <a href="#" class="nav-item" data-page="tashkilotlar">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    Tashkilotlar
+                </a>
+
+                <a href="#" class="nav-item" data-page="tahlil">
+                    <i class='bx bxs-pie-chart-alt-2'></i>
+                    Tahlil
+                </a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-container">
+                    <button class="arrow-btn">
+                        <i class='bx bx-chevron-left'></i>
+                    </button>
+                    
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="searchInput" placeholder="Qidirish..." />
+                    </div>
+                    
+                    <button class="arrow-btn">
+                        <i class='bx bx-chevron-right'></i>
+                    </button>
+                </div>
+
+                <button class="btn-create" id="createBtn">
+                    <i class='bx bx-plus'></i>
+                    Murojaat kiritish
+                </button>
+            </div>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Appeals List View -->
+                <div id="appealsView">
+                    <h2 class="page-title">Murojaatlar</h2>
+                    <div class="appeals-grid" id="appealsGrid"></div>
+                </div>
+
+                <!-- Ijro Table View -->
+                <div class="ijro-table-container" id="ijroView">
+                    <h2 class="page-title">Ijro</h2>
+                    <div class="table-header">
+                        <div class="header-cell">F.I.SH</div>
+                        <div class="header-cell">Bo'linma</div>
+                        <div class="header-cell">Jami</div>
+                        <div class="header-cell">Muddati o'tgan</div>
+                        <div class="header-cell">Bajarilmoqda</div>
+                    </div>
+
+                    <div class="table-body" id="ijroTableBody"></div>
+                </div>
+
+                <!-- Tashkilotlar View -->
+                <div class="tashkilotlar-container" id="tashkilotlarView">
+                    <h2 class="page-title">Tashkilotlar</h2>
+                    
+                    <div class="filter-tabs">
+                        <div class="filter-tab active" data-filter="all">Tashkilot nomi</div>
+                        <div class="filter-tab" data-filter="muddat">Muddat o'tgan</div>
+                        <div class="filter-tab" data-filter="bajarilmoqda">Bajarilmoqda</div>
+                    </div>
+
+                    <div class="table-header">
+                        <div class="header-cell">F.I.SH</div>
+                        <div class="header-cell">Bo'linma</div>
+                        <div class="header-cell">Jami</div>
+                        <div class="header-cell">Muddati o'tgan</div>
+                        <div class="header-cell">Bajarilmoqda</div>
+                    </div>
+
+                    <div class="table-body" id="orgTableBody"></div>
+                </div>
+
+                <!-- Tahlil View -->
+                <div class="tahlil-container" id="tahlilView">
+                    <h2 class="page-title">Tahlil</h2>
+
+                    <div class="dashboard-block">
+                        <div class="block-title">Mavzular bo'yicha statistikalar</div>
+                        Bu yerda grafik bo'ladi
+                    </div>
+
+                    <div class="dashboard-block">
+                        <div class="block-title">Hududlar bo'yicha tahlil</div>
+                        Bu yerda hududlarning statistik grafik bo'ladi
+                    </div>
+                </div>
+
+                <!-- Create Appeal Form -->
+                <div class="create-form-container" id="createFormView">
+                    <div class="form-sidebar">
+                        <div class="user-icon-circle"></div>
+                    </div>
+
+                    <div class="form-center">
+                        <div class="document-list-area" id="documentList"></div>
+
+                        <div class="form-buttons">
+                            <button id="cancelBtn">Bekor qilish</button>
+                            <button id="submitBtn">Kiritish</button>
+                        </div>
+                    </div>
+
+                    <div class="form-right">
+                        <div class="form-right-header" id="formRightHeader"></div>
+                        <div class="form-content-box" id="formContentBox">
+                            Hujjatni ko'rish uchun chap tomonda tanlang...
+                        </div>
+
+                        <div class="si-btn-area">
+                            <button class="si-btn" id="siAnalysisBtn">SI tahlil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="nav-icon">
+                    <i class='bx bxs-grid-alt'></i>
+                </div>
+                <div class="nav-icon">
+                    <i class='bx bxs-grid-alt'></i>
+                </div>
+                <div class="nav-icon active">
+                    <i class='bx bxs-bank'></i>
+                </div>
+                <div class="nav-icon">
+                    <i class='bx bxs-grid-alt'></i>
+                </div>
+                <div class="nav-icon profile-icon" id="profileIcon">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-toast" id="notificationToast">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+        <div class="notification-text">Salom, Baxodir</div>
+    </div>
+
+    <!-- Chat Bubble -->
+    <div class="chat-bubble">
+        Siz tizimdan chiqmasdan barcha hamkasblaringiz bilan suhbatlashishingiz mumkin
+        <button class="chat-toggle">Korporativ chat</button>
+    </div>
+
+    <script>
+        // Appeals data
+        const appealsData = [
+            { number: 'MR-2024-001', title: 'Ijtimoiy nafaqa', location: 'Toshkent shahar', status: 'progress', statusText: 'Jarayonda' },
+            { number: 'MR-2024-002', title: 'Moddiy yordam', location: 'Samarqand viloyati', status: 'pending', statusText: 'Kutilmoqda' },
+            { number: 'MR-2024-003', title: 'Nogironlik guvohnomasi', location: 'Andijon viloyati', status: 'completed', statusText: 'Bajarildi' },
+            { number: 'MR-2024-004', title: 'Reabilitatsiya', location: "Farg'ona viloyati", status: 'progress', statusText: 'Jarayonda' },
+            { number: 'MR-2024-005', title: 'Xizmat sifati', location: 'Buxoro viloyati', status: 'pending', statusText: 'Kutilmoqda' },
+            { number: 'MR-2024-006', title: 'Uyga yordam', location: 'Xorazm viloyati', status: 'completed', statusText: 'Bajarildi' },
+            { number: 'MR-2024-007', title: 'Pensiya hisoblash', location: 'Qashqadaryo viloyati', status: 'progress', statusText: 'Jarayonda' },
+            { number: 'MR-2024-008', title: 'Imtiyozlar', location: 'Surxondaryo viloyati', status: 'pending', statusText: 'Kutilmoqda' },
+            { number: 'MR-2024-009', title: 'Konsultatsiya', location: 'Namangan viloyati', status: 'completed', statusText: 'Bajarildi' }
+        ];
+
+        // Documents data
+        const documentsData = [
+            { label: "Maydon 1", content: "Qabul qilingan ariza №1234" },
+            { label: "Maydon 2", content: "Ijro hisoboti F305" },
+            { label: "Maydon 3", content: "Protokol bo'yicha qaror" },
+            { label: "Maydon 4", content: "Taqdimot loyihasi v1.1" },
+            { label: "Maydon 5", content: "Kelishuv shartnomasi" },
+            { label: "Maydon 6", content: "Xizmat yozishmasi 2025/5" },
+            { label: "Maydon 7", content: "Moliyaviy tahlil natijasi" },
+            { label: "Maydon 8", content: "Mehnat shartnomasi L-89" },
+            { label: "Maydon 9", content: "Vazifa topshirig'i №007" }
+        ];
+
+        // Ijro data
+        const ijroData = [
+            { name: "Karimov Aziz Shavkatovich", department: "Ijtimoiy himoya", total: 112, overdue: 23, inProgress: 89 },
+            { name: "Toshmatova Nilufar Akramovna", department: "Nafaqalar", total: 98, overdue: 15, inProgress: 83 },
+            { name: "Rahmonov Jasur Tulkinovich", department: "Nogironlik", total: 87, overdue: 12, inProgress: 75 },
+            { name: "Usmonova Dilbar Raximovna", department: "Reabilitatsiya", total: 76, overdue: 8, inProgress: 68 },
+            { name: "Ismoilov Sardor Bakhtiyorovich", department: "Moliyaviy yordam", total: 105, overdue: 18, inProgress: 87 },
+            { name: "Mirzayeva Gulnora Alievna", department: "Konsultatsiya", total: 92, overdue: 9, inProgress: 83 },
+            { name: "Yuldashev Otabek Farhodovich", department: "Hujjatlar", total: 81, overdue: 11, inProgress: 70 },
+            { name: "Sharipova Malika Karimovna", department: "Monitoring", total: 69, overdue: 7, inProgress: 62 },
+            { name: "Alimov Rustam Normatovich", department: "Tekshiruv", total: 94, overdue: 14, inProgress: 80 }
+        ];
+
+        // Tashkilotlar data
+        const tashkilotlarData = [
+            { name: "Karimov Aziz Shavkatovich", department: "Ijtimoiy himoya", total: 112, overdue: 23, inProgress: 89 },
+            { name: "Toshmatova Nilufar Akramovna", department: "Nafaqalar", total: 98, overdue: 15, inProgress: 83 },
+            { name: "Rahmonov Jasur Tulkinovich", department: "Nogironlik", total: 87, overdue: 12, inProgress: 75 },
+            { name: "Usmonova Dilbar Raximovna", department: "Reabilitatsiya", total: 76, overdue: 8, inProgress: 68 },
+            { name: "Ismoilov Sardor Bakhtiyorovich", department: "Moliyaviy yordam", total: 105, overdue: 18, inProgress: 87 },
+            { name: "Mirzayeva Gulnora Alievna", department: "Konsultatsiya", total: 92, overdue: 9, inProgress: 83 },
+            { name: "Yuldashev Otabek Farhodovich", department: "Hujjatlar", total: 81, overdue: 11, inProgress: 70 },
+            { name: "Sharipova Malika Karimovna", department: "Monitoring", total: 69, overdue: 7, inProgress: 62 },
+            { name: "Alimov Rustam Normatovich", department: "Tekshiruv", total: 94, overdue: 14, inProgress: 80 }
+        ];
+
+        let isAnalysisMode = false;
+
+        // Render appeals
+        function renderAppeals(appeals) {
+            const grid = document.getElementById('appealsGrid');
+            if (!appeals.length) {
+                grid.innerHTML = '<div class="empty-state"><i class="bx bx-inbox"></i><h3>Murojaatlar topilmadi</h3></div>';
+                return;
+            }
+            grid.innerHTML = appeals.map(appeal => `
+                <div class="appeal-card" onclick="openAppeal('${appeal.number}')">
+                    <div class="appeal-number">${appeal.number}</div>
+                    <div class="appeal-title">${appeal.title}</div>
+                    <div class="appeal-location"><i class='bx bx-map'></i>${appeal.location}</div>
+                    <span class="appeal-status status-${appeal.status}">${appeal.statusText}</span>
+                </div>
+            `).join('');
+        }
+
+        function openAppeal(number) {
+            alert(`Murojaat ${number} tafsilotlari`);
+        }
+
+        // Render Ijro table
+        function renderIjroTable() {
+            const tbody = document.getElementById('ijroTableBody');
+            tbody.innerHTML = ijroData.map(item => `
+                <div class="table-row">
+                    <div class="table-cell name">${item.name}</div>
+                    <div class="table-cell">${item.department}</div>
+                    <div class="table-cell cell-total"><span class="cell-number">${item.total}</span></div>
+                    <div class="table-cell cell-warning"><span class="cell-number">${item.overdue}</span></div>
+                    <div class="table-cell cell-success"><span class="cell-number">${item.inProgress}</span></div>
+                </div>
+            `).join('');
+        }
+
+        // Render Tashkilotlar table
+        function renderTashkilotlarTable(filter = 'all') {
+            const tbody = document.getElementById('orgTableBody');
+            let data = [...tashkilotlarData];
+            
+            if (filter === 'muddat') {
+                data = data.sort((a, b) => b.overdue - a.overdue);
+            } else if (filter === 'bajarilmoqda') {
+                data = data.sort((a, b) => b.inProgress - a.inProgress);
+            }
+            
+            tbody.innerHTML = data.map(item => `
+                <div class="table-row">
+                    <div class="table-cell name">${item.name}</div>
+                    <div class="table-cell">${item.department}</div>
+                    <div class="table-cell cell-total"><span class="cell-number">${item.total}</span></div>
+                    <div class="table-cell cell-warning"><span class="cell-number">${item.overdue}</span></div>
+                    <div class="table-cell cell-success"><span class="cell-number">${item.inProgress}</span></div>
+                </div>
+            `).join('');
+        }
+
+        // Render documents
+        function renderDocuments(analysisMode = false) {
+            const list = document.getElementById('documentList');
+            const data = analysisMode 
+                ? documentsData.map((d, i) => `${d.label}: ${d.content} ${[1,6].includes(i) ? '⚠️' : '✓'}`)
+                : documentsData.map(d => d.label);
+            
+            list.innerHTML = data.map((text, i) => 
+                `<div class="document-item" data-index="${i}">${text}</div>`
+            ).join('');
+
+            setTimeout(() => {
+                document.querySelectorAll('.document-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        document.querySelectorAll('.document-item').forEach(i => i.classList.remove('selected'));
+                        this.classList.add('selected');
+                        const idx = this.dataset.index;
+                        const doc = documentsData[idx];
+                        const contentBox = document.getElementById('formContentBox');
+                        contentBox.classList.add('has-content');
+                        contentBox.innerHTML = `
+                            <div style="padding: 10px;">
+                                <strong style="font-size: 18px; color: #1e293b;">${doc.label}</strong><br><br>
+                                <div style="color: #475569; line-height: 1.8;">
+                                    ${doc.content}<br><br>
+                                    <strong>Qo'shimcha ma'lumot:</strong><br>
+                                    • Sana: ${new Date().toLocaleDateString('uz-UZ')}<br>
+                                    • Holat: Faol<br>
+                                    • Mas'ul: Administrator
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('formRightHeader').textContent = analysisMode ? '🤖 SI Tahlili' : 'Hujjat Mazmuni';
+                    });
+                });
+            }, 100);
+        }
+
+        // Show create form
+        document.getElementById('createBtn').addEventListener('click', () => {
+            document.getElementById('appealsView').style.display = 'none';
+            document.getElementById('createFormView').classList.add('active');
+            document.getElementById('createBtn').style.display = 'none';
+            document.getElementById('searchInput').parentElement.parentElement.style.display = 'none';
+            renderDocuments(false);
+            isAnalysisMode = false;
+        });
+
+        // Cancel button
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('appealsView').style.display = 'block';
+            document.getElementById('createFormView').classList.remove('active');
+            document.getElementById('createBtn').style.display = 'flex';
+            document.getElementById('searchInput').parentElement.parentElement.style.display = 'flex';
+            document.getElementById('formContentBox').innerHTML = 'Hujjatni ko\'rish uchun chap tomonda tanlang...';
+            document.getElementById('formContentBox').classList.remove('has-content');
+            document.getElementById('formRightHeader').textContent = '';
+        });
+
+        // Submit button
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            alert('Murojaat muvaffaqiyatli kiritildi!');
+            document.getElementById('cancelBtn').click();
+        });
+
+        // SI Analysis
+        document.getElementById('siAnalysisBtn').addEventListener('click', () => {
+            isAnalysisMode = true;
+            renderDocuments(true);
+            const contentBox = document.getElementById('formContentBox');
+            contentBox.classList.add('has-content');
+            contentBox.innerHTML = `
+                <div style="padding: 15px;">
+                    <h3 style="color: #059669; margin-bottom: 20px; font-size: 19px;">🤖 Sun'iy Intellekt Tahlili</h3>
+                    
+                    <div style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #10b981;">
+                        <strong style="color: #059669; font-size: 15px;">✓ Umumiy xulosalar:</strong>
+                        <p style="margin-top: 10px; color: #065f46; line-height: 1.8;">
+                            Barcha hujjatlar tahlil qilindi. Tizimda ${documentsData.length} ta hujjat mavjud.
+                        </p>
+                    </div>
+
+                    <div style="background: #eff6ff; padding: 16px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #3b82f6;">
+                        <strong style="color: #1e40af; font-size: 15px;">📊 Statistika:</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px; color: #1e40af; line-height: 1.9;">
+                            <li>Arizalar: 2 ta</li>
+                            <li>Hisobotlar: 2 ta</li>
+                            <li>Shartnomalar: 3 ta</li>
+                            <li>Boshqa: 2 ta</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #fef3c7; padding: 16px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid #f59e0b;">
+                        <strong style="color: #d97706; font-size: 15px;">⚠️ Diqqat talab qiladi:</strong>
+                        <p style="margin-top: 10px; color: #92400e; line-height: 1.8;">
+                            2 ta hujjat ko'rib chiqish talab qiladi: <strong>Maydon 2</strong> va <strong>Maydon 7</strong>
+                        </p>
+                    </div>
+
+                    <div style="background: #dcfce7; padding: 14px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                        <strong style="color: #15803d; font-size: 15px;">✓ Tahlil yakunlandi</strong>
+                        <p style="margin-top: 6px; font-size: 13px; color: #166534;">
+                            Sana: ${new Date().toLocaleString('uz-UZ')}
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('formRightHeader').textContent = '🤖 Sun\'iy Intellekt Tahlili';
+        });
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = appealsData.filter(a => 
+                a.number.toLowerCase().includes(term) || 
+                a.title.toLowerCase().includes(term) || 
+                a.location.toLowerCase().includes(term)
+            );
+            renderAppeals(filtered);
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Hide all views
+                document.getElementById('appealsView').style.display = 'none';
+                document.getElementById('ijroView').classList.remove('active');
+                document.getElementById('tashkilotlarView').classList.remove('active');
+                document.getElementById('tahlilView').classList.remove('active');
+                document.getElementById('createFormView').classList.remove('active');
+                
+                // Reset header elements
+                document.getElementById('createBtn').style.display = 'flex';
+                document.getElementById('searchInput').parentElement.parentElement.style.display = 'flex';
+                
+                const page = this.dataset.page;
+                if (page === 'murojaat') {
+                    document.getElementById('appealsView').style.display = 'block';
+                    renderAppeals(appealsData);
+                } else if (page === 'ijro') {
+                    document.getElementById('ijroView').classList.add('active');
+                    document.getElementById('createBtn').style.display = 'none';
+                    renderIjroTable();
+                } else if (page === 'tashkilotlar') {
+                    document.getElementById('tashkilotlarView').classList.add('active');
+                    document.getElementById('createBtn').style.display = 'none';
+                    renderTashkilotlarTable();
+                } else if (page === 'tahlil') {
+                    document.getElementById('tahlilView').classList.add('active');
+                    document.getElementById('createBtn').style.display = 'none';
+                }
+            });
+        });
+
+        // Filter tabs for Tashkilotlar
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.dataset.filter;
+                renderTashkilotlarTable(filter);
+            });
+        });
+
+        // Initialize
+        renderAppeals(appealsData);
+
+        // Profile icon click - show notification
+        document.getElementById('profileIcon').addEventListener('click', () => {
+            const toast = document.getElementById('notificationToast');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        });
+
+        // Show notification on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const toast = document.getElementById('notificationToast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

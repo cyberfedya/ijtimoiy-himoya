@@ -1,399 +1,229 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kirish - Ijtimoiy Himoya Portali</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Tizimga Kirish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .login-container {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 48px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.5s ease-out;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        
-        .logo h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-        
-        .logo p {
-            font-size: 14px;
-            color: #6b7280;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 8px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            outline: none;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .form-group input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        
-        .password-wrapper {
+            height: 100vh;
+            overflow: hidden;
             position: relative;
         }
-        
-        .toggle-password {
+
+        .background {
             position: absolute;
-            right: 16px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80') center/cover no-repeat;
+            filter: blur(0px);
+        }
+
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(-50%) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-50%) translateX(20px);
+            }
+        }
+
+        .login-container {
+            position: absolute;
+            left: 50%;
             top: 50%;
-            transform: translateY(-50%);
-            background: none;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 8px;
+            padding: 50px 60px;
+            width: 420px;
+            z-index: 3;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-title {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 0;
+            font-size: 14px;
+            color: white;
+            background: transparent;
             border: none;
-            cursor: pointer;
-            padding: 0;
-            color: #9ca3af;
-            transition: color 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            outline: none;
+            transition: all 0.3s;
         }
-        
-        .toggle-password:hover {
-            color: #667eea;
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
         }
-        
-        .toggle-password svg {
-            width: 20px;
-            height: 20px;
+
+        .form-group input:focus {
+            border-bottom-color: rgba(255, 255, 255, 0.8);
         }
-        
+
         .login-btn {
             width: 100%;
             padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
             color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 24px;
+            margin-top: 35px;
+            text-transform: uppercase;
         }
-        
+
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
-        
+
         .login-btn:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
-        
+
         .error-message {
-            background: #fee2e2;
-            color: #dc2626;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
             padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-top: 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-top: 20px;
+            text-align: center;
             display: none;
         }
-        
-        .demo-info {
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
+
+        @media (max-width: 1200px) {
+            .eagle {
+                display: none;
+            }
+
+            .login-container {
+                transform: translate(-50%, -50%);
+            }
         }
-        
-        .demo-info p {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 8px;
-        }
-        
-        .demo-credentials {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .demo-credentials span {
-            background: #f3f4f6;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            color: #374151;
-            font-family: monospace;
-        }
-        
-        .auth-options {
-            margin: 24px 0;
-        }
-        
-        .auth-options-title {
-            text-align: center;
-            position: relative;
-            margin-bottom: 20px;
-        }
-        
-        .auth-options-title::before,
-        .auth-options-title::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: #e5e7eb;
-        }
-        
-        .auth-options-title::before {
-            left: 0;
-        }
-        
-        .auth-options-title::after {
-            right: 0;
-        }
-        
-        .auth-options-title span {
-            background: white;
-            padding: 0 16px;
-            color: #9ca3af;
-            font-size: 13px;
-            position: relative;
-        }
-        
-        .auth-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        
-        .auth-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 500;
-            color: #374151;
-        }
-        
-        .auth-btn:hover {
-            border-color: #667eea;
-            background: #f9fafb;
-            transform: translateY(-2px);
-        }
-        
-        .auth-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .back-link {
-            text-align: center;
-            margin-top: 24px;
-        }
-        
-        .back-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .back-link a:hover {
-            color: #764ba2;
-        }
-        
-        .jshshir-info {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #1e40af;
+
+        @media (max-width: 768px) {
+            .login-container {
+                width: 90%;
+                padding: 40px 30px;
+            }
         }
     </style>
 </head>
+
 <body>
+    <div class="background"></div>
+    <div class="eagle"></div>
+
     <div class="login-container">
-        <div class="logo">
-            <h1>MUROJAATLAR TIZIMI</h1>
-            <p>Ijtimoiy himoya milliy agentligi</p>
-        </div>
-        
-        <!-- Authentication Options -->
-        <div class="auth-options">
-            <div class="auth-buttons">
-                <button type="button" class="auth-btn" onclick="alert('One ID orqali kirish funksiyasi qo\'shilmoqda...')">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                    </svg>
-                    One ID
-                </button>
-                <button type="button" class="auth-btn" onclick="alert('ERI (Elektron Raqamli Imzo) orqali kirish funksiyasi qo\'shilmoqda...')">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    ERI
-                </button>
-                <button type="button" class="auth-btn" onclick="alert('Biometrik autentifikatsiya funksiyasi qo\'shilmoqda...')">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                    </svg>
-                    Biometrik
-                </button>
-                <button type="button" class="auth-btn" onclick="alert('Mobil raqam orqali SMS kod bilan kirish funksiyasi qo\'shilmoqda...')">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    SMS
-                </button>
-            </div>
-            <div class="auth-options-title">
-                <span>yoki login bilan</span>
-            </div>
-        </div>
-        
+        <h1 class="login-title">TIZIMGA KIRISH</h1>
+
         <form id="login-form">
             <div class="form-group">
-                <label for="username">Login</label>
-                <input type="text" id="username" placeholder="Loginingizni kiriting" required>
+                <input type="text" id="username" placeholder="Login" required autocomplete="off">
             </div>
-            
+
             <div class="form-group">
-                <label for="password">Parol</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" placeholder="Parolingizni kiriting" required>
-                    <button type="button" class="toggle-password" id="toggle-password">
-                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <svg id="eye-slash-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                        </svg>
-                    </button>
-                </div>
+                <input type="password" id="password" placeholder="Parol" required autocomplete="off">
             </div>
-            
+
             <button type="submit" class="login-btn">KIRISH</button>
-            
+
             <div id="error-message" class="error-message"></div>
         </form>
-        
-        <div class="back-link">
-            <a href="landing.html">← Bosh sahifaga qaytish</a>
-        </div>
-        
-        <div class="demo-info">
-            <p>Demo uchun:</p>
-            <div class="demo-credentials">
-                <span>admin / admin</span>
-                <span>fuqaro / 123456</span>
-            </div>
-        </div>
     </div>
 
-    <script src="mockData.js"></script>
     <script>
-        document.getElementById('toggle-password').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
-            const eyeSlashIcon = document.getElementById('eye-slash-icon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.style.display = 'none';
-                eyeSlashIcon.style.display = 'block';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.style.display = 'block';
-                eyeSlashIcon.style.display = 'none';
-            }
-        });
+        // Demo users
+        const users = [
+            { username: 'admin', password: 'admin', role: 'admin' },
+            { username: 'fuqaro', password: '123456', role: 'citizen' }
+        ];
 
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        document.getElementById('login-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorDiv = document.getElementById('error-message');
-            
-            const user = mockData.users.find(u => u.username === username && u.password === password);
-            
+
+            const user = users.find(u => u.username === username && u.password === password);
+
             if (user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                window.location.href = 'home.html';
-            } else {
+                // Store user info
+                const userData = { username: user.username, role: user.role };
+                sessionStorage.setItem('currentUser', JSON.stringify(userData));
+
+                // Show success message
+                errorDiv.style.background = 'rgba(34, 197, 94, 0.9)';
+                errorDiv.textContent = 'Kirish muvaffaqiyatli! Yo\'naltirilmoqda...';
+                errorDiv.style.display = 'block';
+
+                // Redirect after delay
+                // Redirect after delay
+                setTimeout(() => {
+                    // Перенаправление на murojaat.html
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+                errorDiv.style.background = 'rgba(220, 38, 38, 0.9)';
                 errorDiv.textContent = 'Login yoki parol noto\'g\'ri';
                 errorDiv.style.display = 'block';
+
                 setTimeout(() => {
                     errorDiv.style.display = 'none';
                 }, 3000);
             }
         });
+
+        // УДАЛЕН/ЗАКОММЕНТИРОВАН КОД ПАРАЛЛАКСА
     </script>
 </body>
+
 </html>
