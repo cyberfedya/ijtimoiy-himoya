@@ -2,11 +2,14 @@
 <html lang="uz">
 
 <head>
+       
     <meta charset="UTF-8">
+       
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tizimga Kirish</title>
+        <title>Tizimga Kirish</title>
+       
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -159,33 +162,39 @@
 </head>
 
 <body>
-    <div class="background"></div>
-    <div class="eagle"></div>
+        <div class="background"></div>
+        <div class="eagle"></div>
 
-    <div class="login-container">
-        <h1 class="login-title">TIZIMGA KIRISH</h1>
+        <div class="login-container">
+                <h1 class="login-title">TIZIMGA KIRISH</h1>
 
-        <form id="login-form">
-            <div class="form-group">
-                <input type="text" id="username" placeholder="Login" required autocomplete="off">
-            </div>
+                <form id="login-form">
+                        <div class="form-group">
+                                <input type="text" id="username" placeholder="Login" required autocomplete="off">
+                            </div>
 
-            <div class="form-group">
-                <input type="password" id="password" placeholder="Parol" required autocomplete="off">
-            </div>
+                        <div class="form-group">
+                                <input type="password" id="password" placeholder="Parol" required autocomplete="off">
+                            </div>
 
-            <button type="submit" class="login-btn">KIRISH</button>
+                        <button type="submit" class="login-btn">KIRISH</button>
 
-            <div id="error-message" class="error-message"></div>
-        </form>
-    </div>
+                        <div id="error-message" class="error-message"></div>
+                    </form>
+            </div>
 
+       
     <script>
         // Demo users
         const users = [
             { username: 'admin', password: 'admin', role: 'admin' },
             { username: 'fuqaro', password: '123456', role: 'citizen' }
         ];
+
+        // Bu tugma sahifada yo'q edi, shuning uchun uni o'chirdim yoki izohga oldim
+        // document.getElementById("createBtn").addEventListener("click", function () {
+        //     window.location.href = "Murojat.html";
+        // });
 
         document.getElementById('login-form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -197,32 +206,32 @@
             const user = users.find(u => u.username === username && u.password === password);
 
             if (user) {
-                // Store user info
+                // ✅ Kirish muvaffaqiyatli
                 const userData = { username: user.username, role: user.role };
                 sessionStorage.setItem('currentUser', JSON.stringify(userData));
 
-                // Show success message
-                errorDiv.style.background = 'rgba(34, 197, 94, 0.9)';
-                errorDiv.textContent = 'Kirish muvaffaqiyatli! Yo\'naltirilmoqda...';
+                // Muvaffaqiyat xabarini ko'rsatish
+                errorDiv.style.background = 'rgba(34, 197, 94, 0.9)'; // Yashil rang
+                errorDiv.textContent = 'Kirish muvaffaqiyatli! Dashboardga yo\'naltirilmoqda...';
                 errorDiv.style.display = 'block';
 
-                // Redirect after delay
-                // Redirect after delay
+                // Yo'naltirish
                 setTimeout(() => {
-                    // Перенаправление на murojaat.html
                     window.location.href = 'dashboard.html';
                 }, 1000);
-                errorDiv.style.background = 'rgba(220, 38, 38, 0.9)';
+            } else {
+                // ❌ Kirishda xatolik
+                errorDiv.style.background = 'rgba(220, 38, 38, 0.9)'; // Qizil rang
                 errorDiv.textContent = 'Login yoki parol noto\'g\'ri';
                 errorDiv.style.display = 'block';
 
+                // Xato xabarini 3 sekunddan keyin yashirish
                 setTimeout(() => {
                     errorDiv.style.display = 'none';
                 }, 3000);
             }
         });
 
-        // УДАЛЕН/ЗАКОММЕНТИРОВАН КОД ПАРАЛЛАКСА
     </script>
 </body>
 
